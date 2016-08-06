@@ -141,7 +141,7 @@ public class ActivityTouch extends Activity {
     	//String cmdSend;
     	//String temptxtMotor;
     	
-        // variables for drag (���������� ��� ��������������)
+        // variables for drag
         boolean drag = false;
         float dragX = 0;
         float dragY = 0;
@@ -188,7 +188,7 @@ public class ActivityTouch extends Activity {
         @Override
         public boolean onTouchEvent(MotionEvent event) {
         	
-        	// coordinate of Touch-event (���������� Touch-�������)
+        	// coordinate of Touch-event
         	float evX = event.getX();
         	float evY = event.getY();
                           
@@ -213,7 +213,7 @@ public class ActivityTouch extends Activity {
         		break;
 
         	case MotionEvent.ACTION_MOVE:
-        		// if drag mode is enabled (���� ����� �������������� �������)
+        		// if drag mode is enabled
         		if (drag && radius >= 0 && radius <= BIG_CIRCLE_SIZE) {
         			x = evX;
         			y = evY;
@@ -224,9 +224,9 @@ public class ActivityTouch extends Activity {
         		}
         		break;
 
-        	// touch completed (������� ���������)
+        	// touch completed
         	case MotionEvent.ACTION_UP:
-        		// turn off the drag mode (��������� ����� ��������������)
+        		// turn off the drag mode
         		xcirc = 0;
         		ycirc = 0; 
         		drag = false;
@@ -250,7 +250,7 @@ public class ActivityTouch extends Activity {
 		int yAxis = Math.round(calc_y*pwmMax/BIG_CIRCLE_SIZE);
 		//Log.d("4WD", String.valueOf("xAxis:"+xAxis+"  yAxis"+yAxis));
 		
-		int xR = Math.round(BIG_CIRCLE_SIZE*xRperc/100);		// calculate the value of pivont point (��������� �������� ����� ���������)
+		int xR = Math.round(BIG_CIRCLE_SIZE*xRperc/100);		// calculate the value of pivont point
        
         if(xAxis > 0) {
         	motorRight = yAxis;
@@ -310,7 +310,7 @@ public class ActivityTouch extends Activity {
     
     private void loadPref(){
     	SharedPreferences mySharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);  
-    	address = mySharedPreferences.getString("pref_MAC_address", address);			// the first time we load the default values (������ ��� ��������� ��������� ��������)
+    	address = mySharedPreferences.getString("pref_MAC_address", address);			// the first time we load the default values
     	xRperc = Integer.parseInt(mySharedPreferences.getString("pref_xRperc", String.valueOf(xRperc)));
     	pwmMax = Integer.parseInt(mySharedPreferences.getString("pref_pwmMax", String.valueOf(pwmMax)));
     	show_Debug = mySharedPreferences.getBoolean("pref_Debug", false);
