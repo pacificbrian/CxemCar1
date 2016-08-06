@@ -3,7 +3,7 @@
  *  @version 1.2
  *  http://cxem.net/uprav/uprav43.php - RUS
  *  http://english.cxem.net/mcu/mcu2.php - ENG
- *  @author Koltykov A.V. (Колтыков А.В.)
+ *  @author Koltykov A.V.
  * 
  */
 

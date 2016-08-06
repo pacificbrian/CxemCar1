@@ -36,14 +36,14 @@ public class ActivityTouch extends Activity {
     private int motorLeft = 0;
     private int motorRight = 0;
     
-    private String address;				// MAC-address from settings (MAC-адрес устройства из настроек)
-    private boolean show_Debug;			// show debug information (from settings) (отображение отладочной информации (из настроек))
-    private boolean BT_is_connect;		// bluetooh is connected (переменная для хранения информации подключен ли Bluetooth) 
-    private int xRperc;					// pivot point from settings (точка разворота из настроек)
-    private int pwmMax;	   				// maximum value of PWM from settings (максимальное значение ШИМ из настроек)
-    private String commandLeft;			// command symbol for left motor from settings (символ команды левого двигателя из настроек)
-    private String commandRight;		// command symbol for right motor from settings (символ команды правого двигателя из настроек)
-    private String commandHorn;			// command symbol for optional command from settings (for example - horn) (символ команды для доп. канала (звуковой сигнал) из настроек)
+    private String address;				// MAC-address from settings
+    private boolean show_Debug;			// show debug information (from settings)
+    private boolean BT_is_connect;		// bluetooth is connected
+    private int xRperc;					// pivot point from settings
+    private int pwmMax;	   				// maximum value of PWM from settings
+    private String commandLeft;			// command symbol for left motor from settings
+    private String commandRight;		// command symbol for right motor from settings
+    private String commandHorn;			// command symbol for optional command from settings (for example - horn)
     private String cmdSendL,cmdSendR;
 	
 	@Override
@@ -141,7 +141,7 @@ public class ActivityTouch extends Activity {
     	//String cmdSend;
     	//String temptxtMotor;
     	
-        // variables for drag (переменные для перетаскивания)
+        // variables for drag (пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ)
         boolean drag = false;
         float dragX = 0;
         float dragY = 0;
@@ -188,7 +188,7 @@ public class ActivityTouch extends Activity {
         @Override
         public boolean onTouchEvent(MotionEvent event) {
         	
-        	// coordinate of Touch-event (координаты Touch-события)
+        	// coordinate of Touch-event (пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ Touch-пїЅпїЅпїЅпїЅпїЅпїЅпїЅ)
         	float evX = event.getX();
         	float evY = event.getY();
                           
@@ -213,7 +213,7 @@ public class ActivityTouch extends Activity {
         		break;
 
         	case MotionEvent.ACTION_MOVE:
-        		// if drag mode is enabled (если режим перетаскивания включен)
+        		// if drag mode is enabled (пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ)
         		if (drag && radius >= 0 && radius <= BIG_CIRCLE_SIZE) {
         			x = evX;
         			y = evY;
@@ -224,9 +224,9 @@ public class ActivityTouch extends Activity {
         		}
         		break;
 
-        	// touch completed (касание завершено)
+        	// touch completed (пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ)
         	case MotionEvent.ACTION_UP:
-        		// turn off the drag mode (выключаем режим перетаскивания)
+        		// turn off the drag mode (пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ)
         		xcirc = 0;
         		ycirc = 0; 
         		drag = false;
@@ -250,7 +250,7 @@ public class ActivityTouch extends Activity {
 		int yAxis = Math.round(calc_y*pwmMax/BIG_CIRCLE_SIZE);
 		//Log.d("4WD", String.valueOf("xAxis:"+xAxis+"  yAxis"+yAxis));
 		
-		int xR = Math.round(BIG_CIRCLE_SIZE*xRperc/100);		// calculate the value of pivont point (вычисляем значение точки разворота)
+		int xR = Math.round(BIG_CIRCLE_SIZE*xRperc/100);		// calculate the value of pivont point (пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ)
        
         if(xAxis > 0) {
         	motorRight = yAxis;
@@ -310,7 +310,7 @@ public class ActivityTouch extends Activity {
     
     private void loadPref(){
     	SharedPreferences mySharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);  
-    	address = mySharedPreferences.getString("pref_MAC_address", address);			// the first time we load the default values (первый раз загружаем дефолтное значение)
+    	address = mySharedPreferences.getString("pref_MAC_address", address);			// the first time we load the default values (пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ)
     	xRperc = Integer.parseInt(mySharedPreferences.getString("pref_xRperc", String.valueOf(xRperc)));
     	pwmMax = Integer.parseInt(mySharedPreferences.getString("pref_pwmMax", String.valueOf(pwmMax)));
     	show_Debug = mySharedPreferences.getBoolean("pref_Debug", false);

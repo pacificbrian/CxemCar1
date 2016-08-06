@@ -29,7 +29,7 @@ public class ActivityMCU  extends Activity{
 	private static String flash_success;
 	private static String error_get_data;
 	
-	private String address;			// MAC-address from settings (MAC-адрес устройства из настроек)
+	private String address;			// MAC-address from settings
 	private static StringBuilder sb = new StringBuilder();
 	
     @Override
@@ -135,13 +135,13 @@ public class ActivityMCU  extends Activity{
 	            	Toast.makeText(activity.getBaseContext(), "Socket failed", Toast.LENGTH_SHORT).show();
 	            	activity.finish();
 	                break;
-	            case cBluetooth.RECIEVE_MESSAGE:								// if message is recieved (если сообщение получено)
+	            case cBluetooth.RECIEVE_MESSAGE:								// if message is recieved
 	            	byte[] readBuf = (byte[]) msg.obj;
 	            	String strIncom = new String(readBuf, 0, msg.arg1);
-	            	sb.append(strIncom);										// append string (присоединяем строку)
+	            	sb.append(strIncom);										// append string
 	            	
-	            	int FDataLineIndex = sb.indexOf("FData:");					// string with Flash-data (строка с Flash данными (чтение))
-	            	int FWOKLineIndex = sb.indexOf("FWOK");						// string with the message of the successful record in Flash (строка с сообщением об успешной записи в Flash)
+	            	int FDataLineIndex = sb.indexOf("FData:");					// string with Flash-data
+	            	int FWOKLineIndex = sb.indexOf("FWOK");						// string with the message of the successful record in Flash
 	            	int endOfLineIndex = sb.indexOf("\r\n");
 	
 	            	Log.d(cBluetooth.TAG, "Recieve Flash Op:" + sb.toString());
@@ -180,7 +180,7 @@ public class ActivityMCU  extends Activity{
 	
     private void loadPref(){
     	SharedPreferences mySharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);  
-    	address = mySharedPreferences.getString("pref_MAC_address", address);			// the first time we load the default values (первый раз загружаем дефолтное значение)
+    	address = mySharedPreferences.getString("pref_MAC_address", address);			// the first time we load the default values
 	}
     
     @Override

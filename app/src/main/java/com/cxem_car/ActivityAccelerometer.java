@@ -40,17 +40,17 @@ public class ActivityAccelerometer extends Activity implements SensorEventListen
     private int yAxis = 0;
     private int motorLeft = 0;
     private int motorRight = 0;
-    private String address;			// MAC-address from settings (MAC-адрес устройства из настроек)
-    private boolean show_Debug;		// show debug information (from settings) (отображение отладочной информации (из настроек))
-    private boolean BT_is_connect;	// bluetooh is connected (переменная для хранения информации подключен ли Bluetooth)
-    private int xMax;		    	// limit on the X axis from settings (предел по оси X, максимальное значение для ШИМ (0-10), чем больше, тем больше нужно наклонять Android-устройство)
-    private int yMax;		    	// limit on the Y axis from settings (предел по оси Y, максимальное значение для ШИМ (0-10))
-    private int yThreshold;  		// minimum value of PWM from settings (минимальное значение ШИМ (порог ниже которого не вращается двигатель))
-    private int pwmMax;	   			// maximum value of PWM from settings (максимальное значение ШИМ из настроек)
-    private int xR;					// pivot point from settings (точка разворота из настроек)
-    private String commandLeft;		// command symbol for left motor from settings (символ команды левого двигателя из настроек)
-    private String commandRight;	// command symbol for right motor from settings (символ команды правого двигателя из настроек)
-    private String commandHorn;		// command symbol for optional command from settings (for example - horn) (символ команды для доп. канала (звуковой сигнал) из настроек)
+    private String address;			// MAC-address
+    private boolean show_Debug;		// show debug information (from settings)
+    private boolean BT_is_connect;	// bluetooth is connected
+    private int xMax;		    	// limit on the X axis from settings (0-10)
+    private int yMax;		    	// limit on the Y axis from settings (0-10)
+    private int yThreshold;  		// minimum value of PWM from settings
+    private int pwmMax;	   			// maximum value of PWM from settings
+    private int xR;					// pivot point from settings
+    private String commandLeft;		// command symbol for left motor from settings
+    private String commandRight;	// command symbol for right motor from settings
+    private String commandHorn;		// command symbol for optional command from settings (for example - horn)
     
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -139,11 +139,11 @@ public class ActivityAccelerometer extends Activity implements SensorEventListen
     	String directionL = "";
     	String directionR = "";
     	String cmdSendL,cmdSendR;
-        float xRaw, yRaw;		// RAW-value from Accelerometer sensor (RAW-значение от акселлерометра)
+        float xRaw, yRaw;		// RAW-value from Accelerometer sensor
     	
         WindowManager windowMgr = (WindowManager)this.getSystemService(WINDOW_SERVICE);
         int rotationIndex = windowMgr.getDefaultDisplay().getRotation();
-        if (rotationIndex == 1 || rotationIndex == 3){			// detect 90 or 270 degree rotation (определяем поворот устройства на 90 или 270 градусов)
+        if (rotationIndex == 1 || rotationIndex == 3){			// detect 90 or 270 degree rotation
         	xRaw = -e.values[1];
         	yRaw = e.values[0];
         }
@@ -156,14 +156,14 @@ public class ActivityAccelerometer extends Activity implements SensorEventListen
         yAxis = Math.round(yRaw*pwmMax/yMax);
         
         if(xAxis > pwmMax) xAxis = pwmMax;
-        else if(xAxis < -pwmMax) xAxis = -pwmMax;		// negative - tilt right (отриц. значение - наклон вправо)
+        else if(xAxis < -pwmMax) xAxis = -pwmMax;		// negative - tilt right
         
         if(yAxis > pwmMax) yAxis = pwmMax;
-        else if(yAxis < -pwmMax) yAxis = -pwmMax;		// negative - tilt forward (отриц. значение - наклон вперед)
+        else if(yAxis < -pwmMax) yAxis = -pwmMax;		// negative - tilt forward
         else if(yAxis >= 0 && yAxis < yThreshold) yAxis = 0;
         else if(yAxis < 0 && yAxis > -yThreshold) yAxis = 0;
         
-        if(xAxis > 0) {		// if tilt to left, slow down the left engine (если влево, то тормозим левый мотор)
+        if(xAxis > 0) {		// if tilt to left, slow down the left engine
         	motorRight = yAxis;
         	if(Math.abs(Math.round(xRaw)) > xR){
         		motorLeft = Math.round((xRaw-xR)*pwmMax/(xMax-xR));
@@ -172,7 +172,7 @@ public class ActivityAccelerometer extends Activity implements SensorEventListen
         	}
         	else motorLeft = yAxis - yAxis*xAxis/pwmMax;
         }
-        else if(xAxis < 0) {		// tilt to right (наклон вправо)
+        else if(xAxis < 0) {		// tilt to right
         	motorLeft = yAxis;
         	if(Math.abs(Math.round(xRaw)) > xR){
         		motorRight = Math.round((Math.abs(xRaw)-xR)*pwmMax/(xMax-xR));
@@ -186,10 +186,10 @@ public class ActivityAccelerometer extends Activity implements SensorEventListen
         	motorRight = yAxis;
         }
         
-        if(motorLeft > 0) {			// tilt to backward (наклон назад)
+        if(motorLeft > 0) {			// tilt to backward
         	directionL = "-";
         }      
-        if(motorRight > 0) {		// tilt to backward (наклон назад)
+        if(motorRight > 0) {		// tilt to backward
         	directionR = "-";
         }
         motorLeft = Math.abs(motorLeft);
@@ -229,7 +229,7 @@ public class ActivityAccelerometer extends Activity implements SensorEventListen
     private void loadPref(){
     	SharedPreferences mySharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);  
     	
-    	address = mySharedPreferences.getString("pref_MAC_address", address);			// the first time we load the default values (первый раз загружаем дефолтное значение)
+    	address = mySharedPreferences.getString("pref_MAC_address", address);			// the first time we load the default values (пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ)
     	xMax = Integer.parseInt(mySharedPreferences.getString("pref_xMax", String.valueOf(xMax)));
     	xR = Integer.parseInt(mySharedPreferences.getString("pref_xR", String.valueOf(xR)));
     	yMax = Integer.parseInt(mySharedPreferences.getString("pref_yMax", String.valueOf(yMax)));

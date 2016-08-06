@@ -31,13 +31,13 @@ public class ActivityButtons extends Activity {
 	
     private int motorLeft = 0;
     private int motorRight = 0;
-    private String address;			// MAC-address from settings (MAC-адрес устройства из настроек)
-    private boolean BT_is_connect;	// bluetooh is connected (переменная для хранения информации подключен ли Bluetooth)    
-    private int pwmBtnMotorLeft;	// left PWM constant value from settings (постоянное значение ШИМ для левого двигателя из настроек)
-    private int pwmBtnMotorRight;	// right PWM constant value from settings (постоянное значение ШИМ для правого двигателя из настроек)
-    private String commandLeft;		// command symbol for left motor from settings (символ команды левого двигателя из настроек)
-    private String commandRight;	// command symbol for right motor from settings (символ команды правого двигателя из настроек)
-    private String commandHorn;		// command symbol for optional command (for example - horn) from settings (символ команды для доп. канала (звуковой сигнал) из настроек)
+    private String address;			// MAC-address from settings
+    private boolean BT_is_connect;	// bluetooth is connected
+    private int pwmBtnMotorLeft;	// left PWM constant value from settings
+    private int pwmBtnMotorRight;	// right PWM constant value from settings
+    private String commandLeft;		// command symbol for left motor from settings
+    private String commandRight;	// command symbol for right motor from settings
+    private String commandHorn;		// command symbol for optional command (for example - horn) from settings
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -180,7 +180,7 @@ public class ActivityButtons extends Activity {
 	
     private void loadPref(){
     	SharedPreferences mySharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);  
-    	address = mySharedPreferences.getString("pref_MAC_address", address);			// the first time we load the default values (первый раз загружаем дефолтное значение)
+    	address = mySharedPreferences.getString("pref_MAC_address", address);			// the first time we load the default values (пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ)
     	pwmBtnMotorLeft = Integer.parseInt(mySharedPreferences.getString("pref_pwmBtnMotorLeft", String.valueOf(pwmBtnMotorLeft)));
     	pwmBtnMotorRight = Integer.parseInt(mySharedPreferences.getString("pref_pwmBtnMotorRight", String.valueOf(pwmBtnMotorRight)));
     	commandLeft = mySharedPreferences.getString("pref_commandLeft", commandLeft);

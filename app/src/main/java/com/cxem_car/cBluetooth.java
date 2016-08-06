@@ -36,13 +36,13 @@ public class cBluetooth{
     
     private final Handler mHandler;
     
-    // statuses for Handler (статусы для Handler)
-    public final static int BL_NOT_AVAILABLE = 1;        	// Bluetooth is not available (Bluetooth не включен)
-    public final static int BL_INCORRECT_ADDRESS = 2;		// incorrect MAC-address (неправильный MAC-адрес)
-    public final static int BL_REQUEST_ENABLE = 3;			// request enable Bluetooth (запрос на включение Bluetooth)
-    public final static int BL_SOCKET_FAILED = 4;			// socket error (ошибка SOCKET)
-    public final static int RECIEVE_MESSAGE = 5;			// receive message (приняли сообщение)
-      
+    // statuses for Handler
+    public final static int BL_NOT_AVAILABLE = 1;        	// Bluetooth is not available
+    public final static int BL_INCORRECT_ADDRESS = 2;		// incorrect MAC-address
+    public final static int BL_REQUEST_ENABLE = 3;			// request enable Bluetooth
+    public final static int BL_SOCKET_FAILED = 4;			// socket error
+    public final static int RECIEVE_MESSAGE = 5;			// receive message
+
     cBluetooth(Context context, Handler handler){
     	btAdapter = BluetoothAdapter.getDefaultAdapter();
     	mHandler = handler;
@@ -125,7 +125,7 @@ public class cBluetooth{
 	        	mHandler.sendEmptyMessage(BL_SOCKET_FAILED);
 	        	return false;
 	        }
-			if(listen_InStream) {		// whether to create a thread for the incoming data (нужно ли создавать поток для входящих данных)
+			if(listen_InStream) {		// whether to create a thread for the incoming data
 				mConnectedThread = new ConnectedThread();
 		    	mConnectedThread.start();
     		}
