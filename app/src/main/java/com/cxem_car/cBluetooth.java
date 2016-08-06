@@ -14,38 +14,52 @@ import java.io.OutputStream;
 import java.lang.reflect.Method;
 import java.util.UUID;
 
+import android.bluetooth.BluetoothManager;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothSocket;
+import android.bluetooth.BluetoothGatt;
+import android.bluetooth.BluetoothGattCallback;
 import android.content.Context;
 import android.os.Build;
 import android.os.Handler;
 import android.util.Log;
 
-public class cBluetooth{
-	
+public class cBluetooth {
+
 	public final static String TAG = "BL_4WD";
-	
+
+	private static BluetoothManager btManager = null;
 	private static BluetoothAdapter btAdapter = null;
-    private BluetoothSocket btSocket = null;
-    private OutputStream outStream = null;
+	private static BluetoothGatt btGatt;
+	private BluetoothSocket btSocket = null;
+	private OutputStream outStream = null;
 	private ConnectedThread mConnectedThread;
 
-    // SPP UUID service 
-    private static final UUID MY_UUID = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB");
-    
-    private final Handler mHandler;
-    
-    // statuses for Handler
-    public final static int BL_NOT_AVAILABLE = 1;        	// Bluetooth is not available
-    public final static int BL_INCORRECT_ADDRESS = 2;		// incorrect MAC-address
-    public final static int BL_REQUEST_ENABLE = 3;			// request enable Bluetooth
-    public final static int BL_SOCKET_FAILED = 4;			// socket error
-    public final static int RECIEVE_MESSAGE = 5;			// receive message
+	// SPP UUID service
+	private static final UUID MY_UUID = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB");
 
-    cBluetooth(Context context, Handler handler){
-    	btAdapter = BluetoothAdapter.getDefaultAdapter();
-    	mHandler = handler;
+	private final Handler mHandler;
+	private final Context mContext;
+
+	// statuses for Handler
+	public final static int BL_NOT_AVAILABLE = 1;            // Bluetooth is not available
+	public final static int BL_INCORRECT_ADDRESS = 2;        // incorrect MAC-address
+	public final static int BL_REQUEST_ENABLE = 3;            // request enable Bluetooth
+	public final static int BL_SOCKET_FAILED = 4;            // socket error
+	public final static int RECIEVE_MESSAGE = 5;            // receive message
+
+	private final BluetoothGattCallback myGattCallback = new BluetoothGattCallback(){ };
+
+	cBluetooth(Context context, Handler handler){
+		mHandler = handler;
+		mContext = context;
+
+		if (btManager == null)
+			btManager = (BluetoothManager) context.getSystemService(Context.BLUETOOTH_SERVICE);
+
+		//btAdapter = BluetoothAdapter.getDefaultAdapter();
+		btAdapter = btManager.getAdapter();
         if (btAdapter == null) {
         	mHandler.sendEmptyMessage(BL_NOT_AVAILABLE);
             return;
@@ -84,12 +98,16 @@ public class cBluetooth{
     	if(!BluetoothAdapter.checkBluetoothAddress(address)){
     		mHandler.sendEmptyMessage(BL_INCORRECT_ADDRESS);
     		return false;
-    	}
-    	else{
-    		    		
+    	} else {
     		BluetoothDevice device = btAdapter.getRemoteDevice(address);
+
+			/* TODO */
+			btGatt = device.connectGatt(mContext, true, myGattCallback);
+			Log.d(TAG, "BT_Connect() connectGatt: " + btGatt);
+
     		try {
 				btSocket = createBluetoothSocket(device);
+				Log.d(TAG, "BT_Connect() Create socket: " + address);
 			} catch (IOException e1) {
 	        	Log.e(TAG, "In BT_Connect() socket create failed: " + e1.getMessage());
 	        	mHandler.sendEmptyMessage(BL_SOCKET_FAILED);
@@ -97,6 +115,7 @@ public class cBluetooth{
 			}
 	        
     		if (btAdapter.isDiscovering()) {
+				Log.d(TAG, "...Cancel Discovery...");
     			btAdapter.cancelDiscovery();
     		}
 	        
@@ -106,7 +125,10 @@ public class cBluetooth{
 	          Log.d(TAG, "...Connection ok...");
 	        } catch (IOException e) {
 	          try {
-	            btSocket.close();
+				  btSocket.close();
+				  Log.d(TAG, "...Connection not established...");
+				  btSocket = null;
+				  return false;
 	          } catch (IOException e2) {
 	        	  Log.e(TAG, "In BT_Connect() unable to close socket during connection failure" + e2.getMessage());
 	        	  mHandler.sendEmptyMessage(BL_SOCKET_FAILED);
@@ -130,6 +152,7 @@ public class cBluetooth{
 		    	mConnectedThread.start();
     		}
     	}
+		Log.d(TAG, "BT_connect() returns " + connected);
     	return connected;
 	}
            
@@ -165,7 +188,7 @@ public class cBluetooth{
 	        try {
 	        	outStream.write(msgBuffer);
 	        } catch (IOException e) {
-	        	Log.e(TAG, "In onResume() exception occurred during write: " + e.getMessage());
+	        	Log.e(TAG, "In sendData() exception occurred during write: " + e.getMessage());
 	        	mHandler.sendEmptyMessage(BL_SOCKET_FAILED);
 	        	return;      
 	        }
