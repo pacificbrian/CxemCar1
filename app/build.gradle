@@ -1,13 +1,13 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 15
+    compileSdkVersion 22
     buildToolsVersion "24.0.1"
 
     defaultConfig {
         applicationId "com.cxem_car"
         minSdkVersion 14
-        targetSdkVersion 17
+        targetSdkVersion 22
     }
 
     buildTypes {
@@ -19,5 +19,5 @@ android {
 }
 
 dependencies {
-    compile 'com.android.support:support-v4:18.0.0'
+    compile 'com.android.support:support-v4:24.1.1'
 }
